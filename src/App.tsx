@@ -699,49 +699,57 @@ const MENTORS = [
     name: "Juan Pablo Gomez",
     role: "Programación",
     studio: "Rival Arts",
-    img: "/assets/mentors/juan-pablo-gomez.svg",
+    img: "/mentors/Juan Pablo Gomez.jpg",
+    fallback: "/assets/mentors/juan-pablo-gomez.svg",
   },
   {
     name: "Hender Ortiz",
     role: "Programación",
     studio: "Aventuras Bonitas",
-    img: "/assets/mentors/hender-ortiz.svg",
+    img: "/mentors/Hender Ortiz.jpeg",
+    fallback: "/assets/mentors/hender-ortiz.svg",
   },
   {
     name: "Juan Miranda",
     role: "Programación",
     studio: "Maleiwa Studio",
-    img: "/assets/mentors/juan-miranda.svg",
+    img: "/mentors/Juan Miranda.jpg",
+    fallback: "/assets/mentors/juan-miranda.svg",
   },
   {
     name: "Erick Velilla",
     role: "Programación",
     studio: "Cracktive Lab",
-    img: "/assets/mentors/erick-velilla.svg",
+    img: "/mentors/Erick Velilla.png",
+    fallback: "/assets/mentors/erick-velilla.svg",
   },
   {
     name: "José Angulo",
     role: "Audio",
     studio: "Joseisaudio",
-    img: "/assets/mentors/jose-angulo.svg",
+    img: "/mentors/Jose Angulo.jpg",
+    fallback: "/assets/mentors/jose-angulo.svg",
   },
   {
     name: "David Barreto",
     role: "Arte",
     studio: "Rival Arts",
-    img: "/assets/mentors/david-barreto.svg",
+    img: "/mentors/David Barreto.png",
+    fallback: "/assets/mentors/david-barreto.svg",
   },
   {
     name: "Paulo Peña",
     role: "Arte",
     studio: "Maleiwa Studio",
-    img: "/assets/mentors/paulo-pena.svg",
+    img: "/mentors/Paulo Pena.png",
+    fallback: "/assets/mentors/paulo-pena.svg",
   },
   {
     name: "Jorge Martinez",
     role: "Diseño",
     studio: "Maleiwa Studio",
-    img: "/assets/mentors/jorge-martinez.svg",
+    img: "/mentors/Jorge Martinez.png",
+    fallback: "/assets/mentors/jorge-martinez.svg",
   },
 ]
 
@@ -788,6 +796,11 @@ function CrackVibes() {
                     alt={m.name}
                     className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                     loading="lazy"
+                    onError={(e) => {
+                      if (m.fallback && e.currentTarget.src !== m.fallback) {
+                        e.currentTarget.src = m.fallback
+                      }
+                    }}
                   />
                 </div>
                 <h4 className="mt-3 font-display text-sm font-bold text-void">
