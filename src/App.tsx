@@ -956,11 +956,15 @@ const SPONSORS: Logo[] = [
   { name: "Mito", src: "/assets/mito.png", dark: true },
   { name: "EquinoxioLab", src: "/assets/equinoxiolab.webp", dark: true },
   { name: "One Pc", src: "/assets/op.png", dark: true },
+  {
+    name: "Frecuencia Gamer",
+    src: "/assets/frecuencia-gamer-logo.png",
+    dark: true,
+  },
 ]
 
 const ALLIES: Logo[] = [
   { name: "IGDA Colombia", src: "/assets/igda.png", dark: true },
-  { name: "Frecuencia Gamer", src: "/assets/frecuencia-gamer.png", dark: true },
   { name: "First Flame", src: "/assets/first-flame.png", dark: true },
   { name: "Maleiwa Studio", src: "/assets/maleiwa.png", dark: true },
   {
@@ -1059,7 +1063,7 @@ function Partners() {
           <p className="mb-5 text-center font-pixel text-[9px] tracking-widest text-grape">
             PATROCINADORES
           </p>
-          <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-5">
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-5 lg:grid-cols-6">
             {SPONSORS.map((s) => (
               <LogoCard
                 key={s.name}
