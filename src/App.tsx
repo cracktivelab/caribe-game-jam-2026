@@ -1,55 +1,50 @@
 import { useEffect, useState } from "react"
 
 /* ---------------------------------------------------------------- */
-/* Countdown                                                         */
+/* Official Post-Jam Constants & Status                             */
 /* ---------------------------------------------------------------- */
 
-const REGISTRATION_URL = "https://holafomo.com/es/event/MTIxNg=="
-const TARGET = new Date("2026-10-16T09:00:00-05:00").getTime()
+const ITCH_JAM_URL = "https://itch.io/jam/gamejamplus-2627"
+const HEROHUB_URL = "https://herohub.gamejamplus.com"
 
-function useCountdown() {
-  const [now, setNow] = useState(() => Date.now())
-  useEffect(() => {
-    const id = setInterval(() => setNow(Date.now()), 1000)
-    return () => clearInterval(id)
-  }, [])
-  const diff = Math.max(0, TARGET - now)
-  return {
-    days: Math.floor(diff / 86400000),
-    hours: Math.floor((diff % 86400000) / 3600000),
-    minutes: Math.floor((diff % 3600000) / 60000),
-  }
-}
-
-function CountdownCard() {
-  const { days, hours, minutes } = useCountdown()
-  const units = [
-    { label: "DÍAS", value: days },
-    { label: "HORAS", value: hours },
-    { label: "MIN", value: minutes },
-  ]
+function DeliveryStatusCard() {
   return (
     <div className="relative rounded-2xl border-2 border-mint bg-void/90 p-6 backdrop-blur-md shadow-[0_0_45px_-8px_rgba(34,225,157,0.65)]">
-      <div className="mb-4 flex items-center gap-2">
-        <span className="h-2 w-2 animate-pulse rounded-full bg-mint" />
-        <span className="font-pixel text-[9px] tracking-wider text-mint">
-          CUENTA REGRESIVA
+      <div className="mb-4 flex items-center justify-between gap-2 border-b border-white/10 pb-3">
+        <div className="flex items-center gap-2">
+          <span className="h-2 w-2 animate-pulse rounded-full bg-mint shadow-[0_0_8px_#22E19D]" />
+          <span className="font-pixel text-[9px] tracking-wider text-mint sm:text-[10px]">
+            ETAPA ACTUAL: ENTREGA DE PITCH &amp; CATEGORÍAS
+          </span>
+        </div>
+        <span className="rounded-full bg-mint/15 px-2.5 py-0.5 font-pixel text-[8px] text-mint">
+          ACTIVA
         </span>
       </div>
-      <div className="flex gap-3">
-        {units.map((u) => (
-          <div
-            key={u.label}
-            className="flex-1 rounded-xl border border-white/10 bg-grape/30 px-2 py-4 text-center"
-          >
-            <div className="font-display text-4xl font-bold tabular-nums text-white sm:text-5xl">
-              {String(u.value).padStart(2, "0")}
-            </div>
-            <div className="mt-2 font-pixel text-[8px] tracking-widest text-lavender">
-              {u.label}
-            </div>
-          </div>
-        ))}
+
+      <div className="rounded-xl border border-white/10 bg-grape/25 p-4">
+        <p className="text-sm font-medium leading-relaxed text-lavender sm:text-base">
+          <strong className="text-white">
+            Juego en Itch.io + Registro en Hero Hub
+          </strong>{" "}
+          · Plazo de Pitch y Categorías: Hasta 2 días después del cierre de la
+          Jam (
+          <span className="text-mint font-semibold">
+            Martes 20 de Octubre, 23:59 BRT
+          </span>
+          ).
+        </p>
+      </div>
+
+      <div className="mt-4 grid grid-cols-2 gap-3 font-pixel text-[8px] tracking-wider sm:text-[9px]">
+        <div className="rounded-lg border border-mint/20 bg-void/60 p-2.5 text-center">
+          <span className="block text-mint">CANAL 1</span>
+          <span className="mt-1 block text-white">Itch.io (Build)</span>
+        </div>
+        <div className="rounded-lg border border-mint/20 bg-void/60 p-2.5 text-center">
+          <span className="block text-mint">CANAL 2</span>
+          <span className="mt-1 block text-white">Hero Hub (Pitch)</span>
+        </div>
       </div>
     </div>
   )
@@ -104,7 +99,7 @@ function FloatingPixelTag({
 function PrimaryButton({
   children,
   className = "",
-  href = REGISTRATION_URL,
+  href = HEROHUB_URL,
   target,
   rel,
 }: {
@@ -130,16 +125,44 @@ function PrimaryButton({
   )
 }
 
+function SecondaryButton({
+  children,
+  className = "",
+  href,
+  target,
+  rel,
+}: {
+  children: React.ReactNode
+  className?: string
+  href: string
+  target?: string
+  rel?: string
+}) {
+  const isExternal = href.startsWith("http")
+  return (
+    <a
+      href={href}
+      target={target ?? (isExternal ? "_blank" : undefined)}
+      rel={rel ?? (isExternal ? "noopener noreferrer" : undefined)}
+      className={`group inline-flex items-center justify-center gap-2 rounded-xl border-2 border-mint bg-void/80 px-7 py-3.5 font-display text-base font-bold text-mint shadow-[0_0_20px_-5px_rgba(34,225,157,0.3)] transition-all duration-200 hover:bg-mint/10 hover:shadow-[0_0_30px_-4px_rgba(34,225,157,0.6)] hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-mint ${className}`}
+    >
+      {children}
+      <span className="transition-transform duration-200 group-hover:translate-x-1">
+        →
+      </span>
+    </a>
+  )
+}
+
 /* ---------------------------------------------------------------- */
 /* Nav + Hero — Dark                                                 */
 /* ---------------------------------------------------------------- */
 
 const NAV_LINKS = [
   { label: "Inicio", href: "#top" },
-  { label: "¿Qué es?", href: "#sobre" },
-  { label: "Beneficios", href: "#beneficios" },
-  { label: "GameJamPlus", href: "#gamejamplus" },
-  { label: "Agenda", href: "#agenda" },
+  { label: "Itch.io & Entregas", href: "#entregas" },
+  { label: "Guía Hero Hub & Pitch", href: "#guia-pitch" },
+  { label: "Incubación GJ+", href: "#gamejamplus" },
   { label: "Mentores", href: "#mentores" },
   { label: "Preguntas", href: "#preguntas" },
 ]
@@ -173,12 +196,12 @@ function Nav() {
           ))}
         </ul>
         <PrimaryButton
-          href={REGISTRATION_URL}
+          href={HEROHUB_URL}
           target="_blank"
           rel="noopener noreferrer"
           className="rounded-full px-5 py-2.5 text-sm"
         >
-          Inscríbete · $35.000
+          Ir a Hero Hub
         </PrimaryButton>
       </nav>
     </header>
@@ -206,8 +229,7 @@ function Hero() {
           <div className="mb-6 inline-flex items-center gap-3 rounded-full border border-mint/40 bg-grape/30 px-4 py-1.5 backdrop-blur">
             <span className="h-2 w-2 rounded-full bg-mint shadow-[0_0_10px_2px_rgba(34,225,157,0.9)]" />
             <span className="text-xs font-medium text-lavender sm:text-sm">
-              16, 17 y 18 DE OCTUBRE 2026 · UNIVERSIDAD DE LA COSTA ·
-              BARRANQUILLA
+              FASE POST-JAM ACTIVA · RUMBO A GAMEJAMPLUS 26/27 (11TH EDITION)
             </span>
           </div>
 
@@ -224,43 +246,30 @@ function Hero() {
           </div>
 
           <p className="mt-6 max-w-lg text-base leading-relaxed text-lavender sm:text-lg">
-            48 horas para crear, aprender y llevar una idea a videojuego. Tres
-            días para crear en equipo, aprender haciendo, conectarte con otros
-            talentos y convertir una idea en un videojuego jugable.
+            ¡Gracias por 48 horas épicas de creación en Barranquilla! La maratón
+            presencial terminó, pero el viaje de tu videojuego apenas comienza.
+            Publica tu prototipo en Itch.io, registra tu Pitch en Hero Hub y
+            postúlate a la etapa de Incubación internacional.
           </p>
 
-          <div className="mt-7 inline-flex items-center gap-2 rounded-xl border border-mint/40 bg-mint/10 px-4 py-2">
-            <span className="font-pixel text-[9px] tracking-wider text-mint">
-              INSCRIPCIÓN
-            </span>
-            <span className="font-display text-sm font-bold text-white">
-              $35.000 COP
-            </span>
-            <span className="text-mint">·</span>
-            <span className="text-xs font-medium text-lavender">
-              Cupos Limitados
-            </span>
-          </div>
-
-          <div className="mt-6 flex flex-wrap items-center gap-4">
+          <div className="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
             <PrimaryButton
-              href={REGISTRATION_URL}
+              href={HEROHUB_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="px-9 py-4 text-lg"
+              className="px-7 py-4 text-base sm:text-lg"
             >
-              INSCRÍBETE AQUÍ
+              SUBIR JUEGO Y PITCH EN HERO HUB
             </PrimaryButton>
-            <a
-              href="#sobre"
-              className="inline-flex items-center justify-center rounded-xl border border-lavender/40 px-7 py-3.5 font-display text-base font-bold text-white transition-colors hover:border-mint hover:text-mint"
+            <SecondaryButton
+              href={ITCH_JAM_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-7 py-4 text-base sm:text-lg"
             >
-              ¿Qué es?
-            </a>
+              PUBLICAR EN ITCH.IO (GJ+ 26/27)
+            </SecondaryButton>
           </div>
-          <p className="mt-4 text-xs text-lavender/70">
-            Asegura tu cupo en HolaFOMO.
-          </p>
         </div>
 
         {/* Visual: Key Visual + countdown */}
@@ -285,7 +294,7 @@ function Hero() {
               className="-top-3 -left-2 sm:-top-4 sm:-left-4"
               rotate="-rotate-6"
             >
-              [ TEAM UP ]
+              [ JAM COMPLETED ]
             </FloatingPixelTag>
 
             <FloatingPixelTag
@@ -293,19 +302,19 @@ function Hero() {
               rotate="rotate-[4deg]"
               slow
             >
-              [ GAME ON ]
+              [ PITCH TIME ]
             </FloatingPixelTag>
 
             <FloatingPixelTag
               className="-bottom-3.5 right-6 sm:right-10"
               rotate="-rotate-2"
             >
-              [ 48H READY ]
+              [ INCUBATION READY ]
             </FloatingPixelTag>
           </div>
 
           <div className="mt-8 w-full max-w-[480px]">
-            <CountdownCard />
+            <DeliveryStatusCard />
           </div>
         </div>
       </div>
@@ -319,20 +328,20 @@ function Hero() {
 
 const METRICS = [
   {
-    stat: "3 Días",
-    desc: "Una experiencia intensiva para llevar una idea desde el concepto hasta un prototipo jugable.",
+    stat: "48 Horas",
+    desc: "Maratón presencial completada con éxito en Universidad de la Costa.",
   },
   {
-    stat: "48 Horas de Creación",
-    desc: "Trabajo colaborativo: desarrollo, diseño, arte, narrativa y pruebas.",
+    stat: "Paso 1: Itch.io",
+    desc: "Build jugable vinculada a la Jam oficial GameJamPlus 26/27.",
   },
   {
-    stat: "Mentorías",
-    desc: "Acompañamiento de profesionales y actores de la industria durante todo el proceso.",
+    stat: "Paso 2: Hero Hub",
+    desc: "Ficha de juego, video pitch y selección de categorías competitivas.",
   },
   {
-    stat: "Premios",
-    desc: "Reconocimientos y oportunidades para los proyectos destacados.",
+    stat: "Incubación GJ+",
+    desc: "Aceleración y mentorías internacionales para proyectos seleccionados.",
   },
 ]
 
@@ -359,164 +368,313 @@ function MetricsRibbon() {
 }
 
 /* ---------------------------------------------------------------- */
-/* Section 2 — ¿Qué es? — Light                                      */
+/* Section — Publicación en Itch.io — Light (#F8F9FA)               */
 /* ---------------------------------------------------------------- */
 
-const INFO_CARDS = [
-  { q: "¿Cuándo?", a: "16 al 18 de octubre de 2026." },
-  { q: "¿Dónde?", a: "Universidad de la Costa – Barranquilla." },
+const ITCH_STEPS = [
   {
-    q: "¿A quién está dirigida?",
-    a: "Desarrolladores, artistas 2D/3D, diseñadores, músicos, escritores, estudiantes y entusiastas.",
+    step: "01",
+    title: "1. Unirse a la Jam",
+    desc: "Todos los miembros de tu equipo deben haberse unido a la página oficial en Itch.io (itch.io/jam/gamejamplus-2627).",
+    tag: "Requisito previo",
   },
   {
-    q: "¿Cuál es el reto?",
-    a: "Construir en equipo un videojuego funcional durante la Jam con creatividad y trabajo colaborativo.",
+    step: "02",
+    title: "2. Crear y Configurar el Proyecto",
+    desc: "Crea el proyecto de tu juego en tu cuenta de Itch.io, sube la build jugable, agrega capturas de pantalla (screenshots), descripción, etiquetas (tags) e instrucciones de cómo jugar.",
+    tag: "Build & Contenido",
+  },
+  {
+    step: "03",
+    title: "3. Visibilidad Pública",
+    desc: "Asegúrate de configurar la página del juego como Pública (no en borrador ni restringida) para que evaluadores y jugadores puedan acceder.",
+    tag: "Configuración",
+  },
+  {
+    step: "04",
+    title: "4. Vincular a la Jam",
+    desc: "Entra a la página de la Jam en Itch.io, envía tu proyecto y guarda el enlace directo de tu juego (https://tu-usuario.itch.io/tu-juego), ya que Hero Hub rechazará enlaces de Drive, GitHub o OneDrive.",
+    tag: "Enlace oficial",
   },
 ]
 
-function WhatIs() {
+function ItchSubmission() {
   return (
-    <section id="sobre" className="bg-[#F8F9FA] text-void">
-      <div className="mx-auto grid max-w-7xl items-start gap-14 px-6 py-24 lg:grid-cols-2">
-        <div>
+    <section id="entregas" className="bg-[#F8F9FA] text-void">
+      <div className="mx-auto max-w-7xl px-6 py-24">
+        <div className="max-w-3xl">
           <div className="mb-5">
-            <PixelBadge tone="purple">SOBRE EL EVENTO</PixelBadge>
+            <PixelBadge tone="purple">PASO 1 · ITCH.IO OFICIAL</PixelBadge>
           </div>
           <h2 className="font-display text-4xl font-bold text-void sm:text-5xl">
-            ¿Qué es la <span className="text-grape">Caribe Game Jam</span>?
+            Publica tu prototipo en <span className="text-grape">Itch.io</span>
           </h2>
           <p className="mt-6 text-lg leading-relaxed text-void/70">
-            Una experiencia intensiva que reúne a desarrolladores, artistas,
-            diseñadores, músicos y creadores para construir videojuegos en
-            equipo. La temática es secreta y se revela al inicio del evento.
-          </p>
-          <p className="mt-4 text-lg leading-relaxed text-void/70">
-            No necesitas tener un equipo previo ni ser experto: aquí aprendes
-            haciendo, con el acompañamiento de mentores de la industria.
+            Antes de llenar el formulario en Hero Hub, tu videojuego debe estar
+            publicado y vinculado a la página oficial de la 11.ª Edición de
+            GameJamPlus en Itch.io.
           </p>
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-2">
-          {INFO_CARDS.map((c) => (
+        <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {ITCH_STEPS.map((s) => (
             <article
-              key={c.q}
-              className="rounded-2xl border border-void/10 bg-white p-6 transition-all duration-300 hover:-translate-y-1 hover:border-grape/40 hover:shadow-[0_20px_50px_-24px_rgba(89,12,139,0.5)]"
+              key={s.step}
+              className="flex flex-col justify-between rounded-2xl border border-void/10 bg-white p-7 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-grape/40 hover:shadow-[0_20px_50px_-24px_rgba(89,12,139,0.35)]"
             >
-              <h3 className="font-display text-lg font-bold text-grape">
-                {c.q}
-              </h3>
-              <p className="mt-2 leading-relaxed text-void/60">{c.a}</p>
+              <div>
+                <div className="flex items-center justify-between">
+                  <span className="font-pixel text-[11px] font-bold text-grape">
+                    {s.step}
+                  </span>
+                  <span className="rounded-full bg-grape/10 px-2.5 py-0.5 text-xs font-semibold text-grape">
+                    {s.tag}
+                  </span>
+                </div>
+                <h3 className="mt-4 font-display text-lg font-bold text-void">
+                  {s.title}
+                </h3>
+                <p className="mt-3 text-sm leading-relaxed text-void/70">
+                  {s.desc}
+                </p>
+              </div>
             </article>
           ))}
         </div>
+
+        <div className="mt-12 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+          <a
+            href={ITCH_JAM_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 rounded-xl bg-grape px-8 py-4 font-display text-base font-bold text-white transition-all duration-200 hover:bg-[#43096b] hover:shadow-[0_15px_30px_-10px_rgba(89,12,139,0.5)]"
+          >
+            IR A LA JAM EN ITCH.IO →
+          </a>
+          <span className="text-xs text-void/60">
+            Enlace oficial:{" "}
+            <code className="font-mono text-grape font-semibold">
+              https://itch.io/jam/gamejamplus-2627
+            </code>
+          </span>
+        </div>
       </div>
     </section>
   )
 }
 
 /* ---------------------------------------------------------------- */
-/* Section — ¿Qué incluye tu inscripción? — White                   */
+/* Section — Guía Rápida Hero Hub & Pitch — White (#FFFFFF)         */
 /* ---------------------------------------------------------------- */
 
-const MEALS = [
-  { day: "Viernes", items: "Cena" },
-  { day: "Sábado", items: "Desayuno · Almuerzo · Cena" },
-  { day: "Domingo", items: "Desayuno · Almuerzo" },
+const HEROHUB_STEPS = [
+  {
+    step: "01",
+    phase: "Paso 1 · Game Submission",
+    title: "Iniciar Envío del Juego",
+    items: [
+      "Inicia sesión en herohub.gamejamplus.com y dirígete a la sección '2. Build your team'.",
+      "Haz clic en el botón 'Submit my game' en tu panel de equipo.",
+      "Verifica los 5 puntos del checklist inicial antes de continuar al formulario.",
+    ],
+  },
+  {
+    step: "02",
+    phase: "Paso 2 · Incubación y Datos",
+    title: "Ficha Técnica e Incubación",
+    items: [
+      "Marca SÍ (Yes) en: 'Do you want to take part in the INCUBATION stage?' para acceder a mentorías y aceleración.",
+      "Ingresa el título (máx. 80 caracteres) y el enlace exacto de Itch.io (https://usuario.itch.io/juego).",
+      "Define responsable, descripción corta (2–3 oraciones), géneros, temáticas, plataformas, gráficos (2D/2.5D/3D) y motor.",
+      "Haz clic UNA sola vez en 'Submit Game'.",
+    ],
+  },
+  {
+    step: "03",
+    phase: "Paso 3 · Pitch Submission",
+    title: "Subir el Video Pitch",
+    items: [
+      "Con el juego en estado SUBMITTED, se desbloquea la tarjeta 'Pitch submission'.",
+      "Pega el enlace completo (https://...) de YouTube, Vimeo o Google Drive (con permisos públicos de visualización).",
+      "Haz clic en 'Send pitch' (requisito indispensable para avanzar a la fase de incubación).",
+    ],
+  },
+  {
+    step: "04",
+    phase: "Paso 4 · Categories",
+    title: "Selección de Categorías",
+    items: [
+      "Haz clic en 'Choose categories' para postular en ramas específicas.",
+      "Marca tu build para 'Best PC Game' o 'Best Mobile Game', y elige Prize Categories opcionales (Ready to Launch, Diverse by Design, Green Play, etc.).",
+      "Nota: Compites automáticamente en Arte, Audio, Game Design, Narrativa, Mejor Juego Regional, Mejor Pitch y GOTY.",
+    ],
+  },
 ]
 
-const BENEFITS = [
-  "Camiseta oficial de la Caribe Game Jam 2026.",
-  "Identificación oficial del evento.",
-  "Acceso a mentorías y acompañamiento continuo.",
-  "Actividades exclusivas de networking.",
-  "Participación en premios e incentivos.",
-  "Showcase final de videojuegos.",
-  "Conexión con la comunidad de desarrollo del Caribe.",
-  "Ruta de crecimiento a través de GameJamPlus.",
+const HEROHUB_ERRORS = [
+  {
+    error: "« O link precisa ser da página do jogo no itch.io »",
+    solution:
+      "Asegúrate de pegar la URL directa de la página pública del juego en Itch.io (ej: https://usuario.itch.io/mi-juego). No uses enlaces de Google Drive, Dropbox, GitHub ni la URL general de la Jam.",
+  },
+  {
+    error: "« Envie o jogo primeiro: o pitch vai junto com ele »",
+    solution:
+      "Primero debes completar y enviar la tarjeta inicial de 'Game submission'. Una vez que el juego figure como SUBMITTED, se habilitarán las tarjetas de Pitch y Categorías.",
+  },
+  {
+    error: "« Só quem enviou este projeto pode editá-lo »",
+    solution:
+      "Solo el compañero de equipo que envió inicialmente el formulario de 'Game submission' tiene permisos para modificar la ficha del juego. Coordina con esa persona para cualquier ajuste.",
+  },
 ]
 
-function CheckIcon() {
+function HeroHubGuide() {
   return (
-    <svg
-      viewBox="0 0 24 24"
-      className="h-5 w-5 flex-none"
-      fill="none"
-      stroke="#22E19D"
-      strokeWidth="3"
-      aria-hidden
-    >
-      <path d="M5 13l4 4L19 7" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  )
-}
-
-function Inscription() {
-  return (
-    <section id="beneficios" className="bg-white text-void">
-      <div className="mx-auto max-w-6xl px-6 py-24">
-        <div className="mx-auto mb-12 max-w-2xl text-center">
-          <div className="mb-5 flex justify-center">
-            <PixelBadge tone="purple">TU INSCRIPCIÓN</PixelBadge>
+    <section id="guia-pitch" className="bg-white text-void">
+      <div className="mx-auto max-w-7xl px-6 py-24">
+        <div className="max-w-3xl">
+          <div className="mb-5">
+            <PixelBadge tone="purple">PASO 2 · HERO HUB &amp; PITCH</PixelBadge>
           </div>
-          <h2 className="font-display text-3xl font-bold text-void sm:text-4xl">
-            Por solo <span className="text-grape">$35.000</span> tendrás acceso
-            a toda la experiencia Caribe Game Jam 2026
+          <h2 className="font-display text-4xl font-bold text-void sm:text-5xl">
+            Guía Rápida: Cómo subir tu Juego, Video Pitch y Categorías en{" "}
+            <span className="text-grape">Hero Hub</span>
           </h2>
+          <p className="mt-6 text-lg leading-relaxed text-void/70">
+            Sigue las instrucciones oficiales de{" "}
+            <strong className="text-void">herohub.gamejamplus.com</strong> para
+            postular tu videojuego a la evaluación de GameJamPlus y a la etapa
+            de incubación internacional.
+          </p>
         </div>
 
-        <div className="overflow-hidden rounded-3xl border-2 border-void/10 shadow-[0_30px_80px_-40px_rgba(89,12,139,0.5)]">
-          <div className="grid lg:grid-cols-2">
-            {/* Área A — Alimentación */}
-            <div className="border-b-2 border-dashed border-void/10 bg-void p-8 text-white lg:border-b-0 lg:border-r-2">
-              <div className="mb-6 flex items-center gap-3">
-                <span className="font-pixel text-[9px] tracking-wider text-mint">
-                  ALIMENTACIÓN COMPLETA
-                </span>
-              </div>
-              <h3 className="font-display text-2xl font-bold text-white">
-                Incluida durante los 3 días
-              </h3>
-              <ul className="mt-6 space-y-4">
-                {MEALS.map((m) => (
-                  <li
-                    key={m.day}
-                    className="flex items-center justify-between rounded-xl border border-white/10 bg-grape/25 px-5 py-4"
-                  >
-                    <span className="font-display font-bold text-mint">
-                      {m.day}
-                    </span>
-                    <span className="text-sm text-lavender">{m.items}</span>
-                  </li>
-                ))}
-              </ul>
+        {/* Regla de Oro del Equipo */}
+        <div className="mt-12 rounded-2xl border-2 border-grape/30 bg-grape/5 p-6 sm:p-8">
+          <div className="flex items-center gap-3">
+            <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-grape font-pixel text-xs text-white">
+              !
+            </span>
+            <h3 className="font-display text-xl font-bold text-grape">
+              Regla de Oro para Equipos en Hero Hub
+            </h3>
+          </div>
+          <div className="mt-5 grid gap-4 md:grid-cols-2">
+            <div className="rounded-xl border border-void/10 bg-white p-5 shadow-sm">
+              <span className="font-pixel text-[9px] font-bold text-grape">
+                FICHA DE JUEGO (GAME SUBMISSION)
+              </span>
+              <p className="mt-2 text-sm leading-relaxed text-void/80">
+                <strong className="text-void">
+                  Solo UNA (1) persona del equipo
+                </strong>{" "}
+                envía el formulario del juego. Solo ese mismo integrante tendrá
+                permisos para editar los datos de la ficha antes del cierre.
+              </p>
             </div>
-
-            {/* Área B — Checklist */}
-            <div className="bg-[#F8F9FA] p-8">
-              <h3 className="font-display text-2xl font-bold text-void">
-                Todo lo que incluye tu cupo
-              </h3>
-              <ul className="mt-6 space-y-3">
-                {BENEFITS.map((b) => (
-                  <li key={b} className="flex items-start gap-3 text-void/70">
-                    <CheckIcon />
-                    <span className="leading-snug">{b}</span>
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-8">
-                <PrimaryButton
-                  href={REGISTRATION_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full rounded-full"
-                >
-                  INSCRÍBETE AQUÍ · Cupos limitados
-                </PrimaryButton>
-              </div>
+            <div className="rounded-xl border border-void/10 bg-white p-5 shadow-sm">
+              <span className="font-pixel text-[9px] font-bold text-[#0f8b5f]">
+                PITCH Y CATEGORÍAS
+              </span>
+              <p className="mt-2 text-sm leading-relaxed text-void/80">
+                Una vez enviado el juego, las tarjetas de{" "}
+                <strong className="text-void">Pitch</strong> y{" "}
+                <strong className="text-void">Categorías</strong> quedan
+                habilitadas.{" "}
+                <strong className="text-void">
+                  Cualquier miembro del equipo
+                </strong>{" "}
+                puede enviarlas o actualizarlas hasta el plazo límite (2 días
+                post-jam).
+              </p>
             </div>
           </div>
+        </div>
+
+        {/* 4 Steps Grid */}
+        <div className="mt-12 grid gap-6 md:grid-cols-2">
+          {HEROHUB_STEPS.map((s) => (
+            <article
+              key={s.step}
+              className="flex flex-col justify-between rounded-2xl border border-void/10 bg-[#F8F9FA] p-7 transition-all duration-300 hover:border-grape/40 hover:shadow-md"
+            >
+              <div>
+                <div className="flex items-center justify-between border-b border-void/10 pb-3">
+                  <span className="font-pixel text-xs font-bold text-grape">
+                    {s.step}
+                  </span>
+                  <span className="font-pixel text-[9px] text-void/60">
+                    {s.phase}
+                  </span>
+                </div>
+                <h4 className="mt-4 font-display text-xl font-bold text-void">
+                  {s.title}
+                </h4>
+                <ul className="mt-4 space-y-2.5">
+                  {s.items.map((item, idx) => (
+                    <li
+                      key={idx}
+                      className="flex items-start gap-2.5 text-sm leading-relaxed text-void/70"
+                    >
+                      <span className="mt-1.5 h-1.5 w-1.5 flex-none rounded-full bg-grape" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        {/* Solución de Errores Frecuentes */}
+        <div className="mt-14 rounded-2xl border border-void/10 bg-[#F8F9FA] p-6 sm:p-8">
+          <div className="mb-6">
+            <span className="font-pixel text-[10px] tracking-wider text-grape">
+              SOLUCIÓN DE PROBLEMAS
+            </span>
+            <h3 className="mt-2 font-display text-2xl font-bold text-void">
+              Mensajes y Errores Frecuentes en la Plataforma
+            </h3>
+            <p className="mt-1 text-sm text-void/60">
+              Hero Hub emite alertas en portugués. Aquí tienes cómo resolver
+              cada una rápidamente:
+            </p>
+          </div>
+
+          <div className="space-y-4">
+            {HEROHUB_ERRORS.map((err, i) => (
+              <div
+                key={i}
+                className="rounded-xl border border-void/10 bg-white p-5 shadow-sm"
+              >
+                <div className="font-mono text-sm font-bold text-[#b42318]">
+                  {err.error}
+                </div>
+                <p className="mt-2 text-sm leading-relaxed text-void/70">
+                  <strong className="text-void">Solución:</strong>{" "}
+                  {err.solution}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Call to action */}
+        <div className="mt-12 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+          <PrimaryButton
+            href={HEROHUB_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-xl px-8 py-4"
+          >
+            ABRIR HERO HUB AHORA
+          </PrimaryButton>
+          <span className="text-xs text-void/60">
+            Plataforma oficial:{" "}
+            <code className="font-mono text-grape font-semibold">
+              https://herohub.gamejamplus.com
+            </code>
+          </span>
         </div>
       </div>
     </section>
@@ -524,10 +682,40 @@ function Inscription() {
 }
 
 /* ---------------------------------------------------------------- */
-/* Section — GameJamPlus — Deep Purple                               */
+/* Section — Ruta de Incubación GameJamPlus — Deep Purple (#590C8B)  */
 /* ---------------------------------------------------------------- */
 
-const GJP_STEPS = ["Crea", "Valida", "Conecta", "Continúa"]
+const GJP_PHASES = [
+  {
+    phase: "01",
+    name: "1. Maratón 48H",
+    status: "Completada",
+    badgeClass: "bg-white/20 text-white",
+    desc: "Prototipo funcional creado en Barranquilla durante el fin de semana presencial en Universidad de la Costa.",
+  },
+  {
+    phase: "02",
+    name: "2. Entrega + Pitch",
+    status: "Etapa Activa",
+    badgeClass:
+      "bg-mint text-void font-bold shadow-[0_0_12px_rgba(34,225,157,0.7)]",
+    desc: "Registro de build en Itch.io y postulación en Hero Hub con video pitch y selección de categorías.",
+  },
+  {
+    phase: "03",
+    name: "3. Incubación GJ+",
+    status: "Noviembre - Marzo",
+    badgeClass: "bg-grape/90 text-mint border border-mint/40",
+    desc: "Mentorías de negocio, aceleración, perfeccionamiento de build y market research con expertos internacionales.",
+  },
+  {
+    phase: "04",
+    name: "4. Semifinales y Gran Final",
+    status: "Rumbo Global",
+    badgeClass: "bg-grape/90 text-lavender border border-white/20",
+    desc: "Exposición internacional ante publishers, inversionistas y la final mundial de GameJamPlus.",
+  },
+]
 
 function GameJamPlus() {
   return (
@@ -541,35 +729,56 @@ function GameJamPlus() {
         aria-hidden
         className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-20"
       />
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-grape/70 via-grape/60 to-void/75 mix-blend-multiply" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-grape/80 via-grape/70 to-void/85 mix-blend-multiply" />
       <div className="pointer-events-none absolute -right-20 top-10 h-72 w-72 rounded-full bg-mint/15 blur-[120px]" />
+
       <div className="relative mx-auto max-w-7xl px-6 py-24">
-        <div className="max-w-2xl">
+        <div className="max-w-3xl">
           <div className="mb-5">
-            <PixelBadge>CARIBE GAME JAM + GAMEJAMPLUS</PixelBadge>
+            <PixelBadge>
+              SIGUIENTE ETAPA · COPA MUNDIAL DE CREACIÓN DE VIDEOJUEGOS
+            </PixelBadge>
           </div>
           <h2 className="font-display text-4xl font-bold text-white sm:text-5xl">
-            De la Jam al <span className="text-mint">Siguiente Nivel</span>
+            De tu Prototipo a un Estudio Real:{" "}
+            <span className="text-mint">Etapa de Incubación GJ+ 26/27</span>
           </h2>
           <p className="mt-6 text-lg leading-relaxed text-lavender">
-            Este año queremos que los proyectos no terminen cuando termine la
-            Jam. La Caribe Game Jam estará conectada con GameJamPlus, una
-            iniciativa internacional que permite que proyectos destacados
-            continúen su desarrollo mediante mentoría, networking, incubación,
-            aceleración y conexión con un circuito internacional de videojuegos.
+            Los proyectos desarrollados en la Caribe Game Jam que marquen{" "}
+            <strong className="text-white">'Yes'</strong> en la pregunta de
+            Incubación y envíen su Video Pitch entrarán al proceso de selección
+            para la Fase de Incubación de GameJamPlus. Durante esta etapa, los
+            equipos seleccionados recibirán mentoría especializada, validación
+            comercial, formación en negocios y acceso a la final regional y
+            mundial.
           </p>
         </div>
 
+        {/* 4 Phases Flow */}
         <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {GJP_STEPS.map((step, i) => (
-            <div key={step} className="relative">
-              <div className="rounded-2xl border border-mint/30 bg-white/5 p-7 backdrop-blur-md transition-colors hover:border-mint/70">
-                <div className="font-pixel text-[10px] text-mint">0{i + 1}</div>
-                <div className="mt-4 font-display text-2xl font-bold text-white">
-                  {step}
+          {GJP_PHASES.map((p, i) => (
+            <div key={p.phase} className="relative">
+              <div className="flex h-full flex-col justify-between rounded-2xl border border-mint/30 bg-white/5 p-7 backdrop-blur-md transition-colors hover:border-mint/70">
+                <div>
+                  <div className="flex items-center justify-between">
+                    <span className="font-pixel text-[11px] text-mint">
+                      {p.phase}
+                    </span>
+                    <span
+                      className={`rounded-full px-2.5 py-0.5 font-pixel text-[8px] tracking-wider ${p.badgeClass}`}
+                    >
+                      {p.status}
+                    </span>
+                  </div>
+                  <h3 className="mt-4 font-display text-xl font-bold text-white">
+                    {p.name}
+                  </h3>
+                  <p className="mt-3 text-sm leading-relaxed text-lavender">
+                    {p.desc}
+                  </p>
                 </div>
               </div>
-              {i < GJP_STEPS.length - 1 && (
+              {i < GJP_PHASES.length - 1 && (
                 <span className="absolute -right-3 top-1/2 z-10 hidden -translate-y-1/2 font-display text-2xl font-bold text-mint lg:block">
                   →
                 </span>
@@ -577,119 +786,37 @@ function GameJamPlus() {
             </div>
           ))}
         </div>
-      </div>
-    </section>
-  )
-}
 
-/* ---------------------------------------------------------------- */
-/* Section — Agenda / Cronograma — Purple dark                       */
-/* ---------------------------------------------------------------- */
-
-const AGENDA = [
-  {
-    day: "DÍA 1",
-    date: "Viernes 16 de Octubre",
-    items: [
-      "4:30 p.m. — Ingreso, registro y acreditación.",
-      "Apertura Caribe Game Jam: bienvenida, reglas y aliados.",
-      "Revelación del reto secreto.",
-      "Formación de equipos y comienzo de la Jam.",
-      "Cena incluida.",
-      "10:00 p.m. — Cierre de la jornada.",
-    ],
-  },
-  {
-    day: "DÍA 2",
-    date: "Sábado 17 de Octubre",
-    items: [
-      "7:00 a.m. — Apertura.",
-      "Desarrollo intensivo de proyectos.",
-      "Mentorías, playtesting, networking y acompañamiento de expertos.",
-      "Desayuno, almuerzo y cena incluidos.",
-      "10:00 p.m. — Cierre de la jornada.",
-    ],
-  },
-  {
-    day: "DÍA 3",
-    date: "Domingo 18 de Octubre",
-    items: [
-      "7:00 a.m. — Apertura.",
-      "Última etapa de desarrollo y preparación de entregas.",
-      "Entrega de proyectos, showcase y evaluación.",
-      "Premiación y cierre.",
-      "Desayuno y almuerzo incluidos.",
-      "5:00 p.m. — Finalización del evento.",
-    ],
-  },
-]
-
-function Agenda() {
-  const [active, setActive] = useState(0)
-  return (
-    <section id="agenda" className="bg-void text-white">
-      <div className="mx-auto max-w-7xl px-6 py-24">
-        <div className="mb-12 flex flex-col items-start gap-4">
-          <PixelBadge>CRONOGRAMA</PixelBadge>
-          <h2 className="font-display text-4xl font-bold text-white sm:text-5xl">
-            Agenda Oficial
-          </h2>
-          <p className="max-w-xl text-lavender">
-            Tres días de creación intensiva, mentorías y comunidad.
-          </p>
-        </div>
-
-        {/* Tabs — mobile */}
-        <div className="mb-6 flex gap-2 lg:hidden">
-          {AGENDA.map((d, i) => (
-            <button
-              key={d.day}
-              onClick={() => setActive(i)}
-              className={`flex-1 rounded-xl border px-3 py-2 font-display text-sm font-bold transition-colors ${
-                active === i
-                  ? "border-mint bg-mint text-void"
-                  : "border-white/10 bg-grape/20 text-lavender"
-              }`}
+        <div className="mt-12 rounded-2xl border border-mint/30 bg-void/60 p-6 backdrop-blur-md">
+          <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
+            <div>
+              <span className="font-pixel text-[9px] tracking-wider text-mint">
+                IMPORTANTE PARA LA INCUBACIÓN
+              </span>
+              <h4 className="mt-1 font-display text-lg font-bold text-white">
+                Requisitos indispensables para calificar a la etapa de
+                Incubación
+              </h4>
+              <p className="mt-1 text-sm text-lavender">
+                1) Marcar "Yes" en la postulación de Hero Hub · 2) Subir el
+                enlace de tu Video Pitch antes del cierre · 3) Mantener la
+                página de Itch.io pública.
+              </p>
+            </div>
+            <PrimaryButton
+              href={HEROHUB_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-none rounded-xl px-6 py-3 text-sm"
             >
-              {d.day}
-            </button>
-          ))}
-        </div>
-
-        <div className="grid gap-6 lg:grid-cols-3">
-          {AGENDA.map((d, i) => (
-            <article
-              key={d.day}
-              className={`rounded-2xl border border-mint/30 bg-grape/15 p-7 ${
-                active === i ? "block" : "hidden"
-              } lg:block`}
-            >
-              <div className="font-pixel text-[10px] tracking-wider text-mint">
-                {d.day}
-              </div>
-              <h3 className="mt-3 font-display text-xl font-bold text-white">
-                {d.date}
-              </h3>
-              <ul className="mt-5 space-y-3">
-                {d.items.map((it) => (
-                  <li
-                    key={it}
-                    className="flex gap-3 text-sm leading-relaxed text-lavender"
-                  >
-                    <span className="mt-2 h-1.5 w-1.5 flex-none bg-mint" />
-                    {it}
-                  </li>
-                ))}
-              </ul>
-            </article>
-          ))}
+              Postular a Incubación
+            </PrimaryButton>
+          </div>
         </div>
       </div>
     </section>
   )
 }
-
-
 /* ---------------------------------------------------------------- */
 /* Section — Road to Caribe Game Jam · CrackVibes & Mentores — White */
 /* ---------------------------------------------------------------- */
@@ -755,7 +882,7 @@ const MENTORS = [
 
 function CrackVibes() {
   return (
-    <section className="bg-white text-void">
+    <section id="mentores" className="bg-white text-void scroll-mt-20">
       <div className="mx-auto max-w-7xl px-6 py-24">
         <div className="grid items-stretch gap-0 overflow-hidden rounded-3xl border-2 border-grape/20 shadow-[0_30px_80px_-40px_rgba(89,12,139,0.5)] lg:grid-cols-2">
           <div className="bg-gradient-to-br from-[#F8F9FA] to-white p-8 sm:p-12">
@@ -783,7 +910,7 @@ function CrackVibes() {
           </div>
         </div>
 
-        <div id="mentores" className="mt-16 scroll-mt-24">
+        <div className="mt-16">
           <h3 className="mb-8 font-display text-2xl font-bold text-void">
             Mentores Confirmados
           </h3>
@@ -875,7 +1002,9 @@ function LogoCard({
               Caribe<span className="font-black text-mint">Dev</span>
             </span>
           ) : (
-            <span className="text-sm font-semibold text-lavender">{logo.name}</span>
+            <span className="text-sm font-semibold text-lavender">
+              {logo.name}
+            </span>
           )}
         </span>
       </div>
@@ -969,64 +1098,53 @@ function Partners() {
 
 const FAQS: { q: string; a: React.ReactNode }[] = [
   {
-    q: "¿Qué incluye el valor de la inscripción?",
-    a: "Incluye alimentación completa durante los 3 días, camiseta e identificación oficial, acceso a mentorías y acompañamiento continuo, actividades de networking, participación en premios, showcase final y conexión con la comunidad y GameJamPlus.",
-  },
-  {
-    q: "¿Quiénes pueden participar?",
-    a: "Perfiles abiertos: desarrolladores, artistas 2D/3D, músicos, diseñadores, narrativa y más. Todos los talentos son bienvenidos.",
-  },
-  {
-    q: "¿Tengo que saber programar, dibujar o hacer audio?",
-    a: "No necesitas ser experto. Habrá mentores que te acompañarán y aprenderás haciendo junto a tu equipo.",
-  },
-  {
-    q: "¿Necesito tener un equipo antes de inscribirme?",
-    a: "Puedes participar de forma individual o en grupo. Habrá dinámicas de integración para conformar equipos multidisciplinarios.",
-  },
-  {
-    q: "¿Pueden participar menores de edad?",
+    q: "¿Dónde debo subir el archivo ejecutable/jugable de mi videojuego?",
     a: (
-      <div className="space-y-4">
-        <p>Sí, mediante un adulto responsable y consentimiento informado.</p>
+      <span>
+        En tu cuenta de Itch.io como proyecto público y enviado a la página
+        oficial de la jam:{" "}
         <a
-          href="#"
-          className="inline-flex items-center gap-2 rounded-full bg-mint px-5 py-2.5 font-display text-sm font-bold text-void transition-all hover:shadow-[0_0_25px_-4px_rgba(34,225,157,0.85)]"
+          href={ITCH_JAM_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="font-semibold text-mint hover:underline"
         >
-          <svg
-            viewBox="0 0 24 24"
-            className="h-4 w-4"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.5"
-            aria-hidden
-          >
-            <path
-              d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-          Descargar Formato de Consentimiento Informado (PDF)
+          itch.io/jam/gamejamplus-2627
         </a>
-      </div>
+        . Debe incluir build jugable, descripción, capturas de pantalla e
+        instrucciones claras de juego.
+      </span>
     ),
   },
   {
-    q: "¿Debo llevar computador?",
-    a: "Sí, debes traer tu laptop personal y las herramientas de trabajo que necesites.",
+    q: "¿Por qué Hero Hub rechaza el enlace de mi juego?",
+    a: (
+      <span>
+        Porque debe ser el enlace directo a la página pública del juego en
+        Itch.io con formato{" "}
+        <code className="rounded bg-white/10 px-1.5 py-0.5 font-mono text-mint">
+          https://tu-usuario.itch.io/tu-juego
+        </code>
+        . No se aceptan enlaces de Google Drive, Dropbox, GitHub ni enlaces
+        incompletos sin <code>https://</code>.
+      </span>
+    ),
   },
   {
-    q: "¿Cómo se conformarán los equipos?",
-    a: "A través de una dinámica de formación multidisciplinaria al inicio del evento.",
+    q: "¿Todos los miembros del equipo deben llenar el formulario del juego en Hero Hub?",
+    a: "No. Solo UN (1) representante del equipo debe enviar el formulario inicial de Game Submission (y solo esa persona podrá editarlo). Sin embargo, todos los miembros deben estar registrados dentro del equipo en Hero Hub y haberse unido a la jam en Itch.io.",
   },
   {
-    q: "¿La Caribe Game Jam está conectada con GameJamPlus?",
-    a: "Sí. Los proyectos destacados pueden continuar su desarrollo mediante mentoría, incubación y aceleración dentro del circuito internacional de GameJamPlus.",
+    q: "¿Cuál es la fecha límite para subir el Video Pitch y elegir categorías?",
+    a: "Tienes hasta 2 días después del cierre de la Jam en nuestra sede (Martes 20 de Octubre a las 23:59 hora de Brasilia / BRT). Te recomendamos revisar el reloj en tiempo real dentro de tu tarjeta de proyecto en Hero Hub.",
   },
   {
-    q: "¿Puedo quedarme a dormir en el lugar del evento?",
-    a: "No. El evento tiene horarios estrictos de apertura y cierre cada día.",
+    q: "¿Qué pasa si quiero cambiar el enlace del Pitch o las categorías después de enviarlos?",
+    a: "Puedes utilizar los botones 'Update pitch' y 'Change categories' tantas veces como necesites antes de que el reloj de la plataforma llegue a cero. Cualquier miembro del equipo puede actualizar el pitch o las categorías una vez enviado el juego.",
+  },
+  {
+    q: "¿Cómo podemos entrar a la etapa de Incubación de GameJamPlus?",
+    a: "Al completar el formulario de juego en Hero Hub, debes responder obligatoriamente 'Yes' en la pregunta 'Do you want to take part in the INCUBATION stage?' y subir tu Video Pitch antes del cierre de entregas. Los proyectos seleccionados accederán a mentorías internacionales, aceleración y visibilidad ante publishers.",
   },
 ]
 
@@ -1126,30 +1244,42 @@ function Institutional() {
 
 function FinalCta() {
   return (
-    <section id="inscribete" className="bg-void">
+    <section id="entregas-final" className="bg-void">
       <div className="mx-auto max-w-7xl px-6 py-20">
         <div className="relative overflow-hidden rounded-3xl border-2 border-mint bg-gradient-to-br from-grape/60 via-void to-void px-8 py-16 text-center shadow-[0_0_80px_-20px_rgba(34,225,157,0.7)] sm:px-16">
           <div className="pointer-events-none absolute -left-16 top-1/2 h-64 w-64 -translate-y-1/2 rounded-full bg-mint/20 blur-3xl" />
           <div className="pointer-events-none absolute -right-16 top-0 h-64 w-64 rounded-full bg-grape/60 blur-3xl" />
           <div className="relative">
             <div className="mb-6 flex justify-center">
-              <PixelBadge>READY? PRESS START</PixelBadge>
+              <PixelBadge>FASE POST-JAM · CARIBE GAME JAM 2026</PixelBadge>
             </div>
             <h2 className="mx-auto max-w-2xl font-display text-4xl font-bold leading-tight text-white sm:text-5xl">
-              48 horas para hacer historia. ¿Estás listo para crear tu{" "}
-              <span className="text-mint">videojuego</span>?
+              ¿Listo para llevar tu juego al{" "}
+              <span className="text-mint">circuito internacional</span>?
             </h2>
-            <div className="mt-9 flex justify-center">
+            <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-lavender sm:text-lg">
+              No dejes tu prototipo en el escritorio. Publica en Itch.io, sube
+              tu Pitch en Hero Hub y continúa la ruta en GameJamPlus 26/27.
+            </p>
+            <div className="mt-9 flex flex-col sm:flex-row items-center justify-center gap-4">
               <PrimaryButton
-                href={REGISTRATION_URL}
+                href={HEROHUB_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-9 py-4 text-lg"
+                className="px-9 py-4 text-base sm:text-lg"
               >
-                INSCRÍBETE AQUÍ
+                IR A HERO HUB
               </PrimaryButton>
+              <SecondaryButton
+                href={ITCH_JAM_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-9 py-4 text-base sm:text-lg"
+              >
+                VER JAM EN ITCH.IO
+              </SecondaryButton>
             </div>
-            <p className="mt-6 text-sm text-lavender">
+            <p className="mt-8 text-sm text-lavender">
               Organizado por CracktiveLab (
               <a
                 href="http://cracktivelab.com"
@@ -1268,10 +1398,9 @@ export default function App() {
       <main>
         <Hero />
         <MetricsRibbon />
-        <WhatIs />
-        <Inscription />
+        <ItchSubmission />
+        <HeroHubGuide />
         <GameJamPlus />
-        <Agenda />
         <CrackVibes />
         <Partners />
         <Faq />
