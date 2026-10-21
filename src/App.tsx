@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react"
 
 /* ---------------------------------------------------------------- */
-/* Official Post-Jam Constants & Status                             */
+/* Post-jam: pitch/category deadline closed 2026-10-20 23:59 BRT.      */
 /* ---------------------------------------------------------------- */
+// Keep submission guides as archive; no next-stage name is confirmed here.
 
 const ITCH_JAM_URL = "https://itch.io/jam/gamejamplus-2627"
 const HEROHUB_URL = "https://herohub.gamejamplus.com"
@@ -12,27 +13,27 @@ function DeliveryStatusCard() {
     <div className="relative rounded-2xl border-2 border-mint bg-void/90 p-6 backdrop-blur-md shadow-[0_0_45px_-8px_rgba(34,225,157,0.65)]">
       <div className="mb-4 flex items-center justify-between gap-2 border-b border-white/10 pb-3">
         <div className="flex items-center gap-2">
-          <span className="h-2 w-2 animate-pulse rounded-full bg-mint shadow-[0_0_8px_#22E19D]" />
+          <span className="h-2 w-2 rounded-full bg-mint" />
           <span className="font-pixel text-[9px] tracking-wider text-mint sm:text-[10px]">
-            ETAPA ACTUAL: ENTREGA DE PITCH &amp; CATEGORÍAS
+            ENTREGA DE PITCH &amp; CATEGORÍAS
           </span>
         </div>
         <span className="rounded-full bg-mint/15 px-2.5 py-0.5 font-pixel text-[8px] text-mint">
-          ACTIVA
+          CERRADA
         </span>
       </div>
 
       <div className="rounded-xl border border-white/10 bg-grape/25 p-4">
         <p className="text-sm font-medium leading-relaxed text-lavender sm:text-base">
           <strong className="text-white">
-            Juego en Itch.io + Registro en Hero Hub
+            El plazo de Pitch y Categorías finalizó
           </strong>{" "}
-          · Plazo de Pitch y Categorías: Hasta 2 días después del cierre de la
-          Jam (
+          el{" "}
           <span className="text-mint font-semibold">
-            Martes 20 de Octubre, 23:59 BRT
+            martes 20 de octubre de 2026 a las 23:59 BRT
           </span>
-          ).
+          . Consulta tu proyecto en Hero Hub y sigue los próximos anuncios
+          oficiales de GameJamPlus.
         </p>
       </div>
 
@@ -229,7 +230,7 @@ function Hero() {
           <div className="mb-6 inline-flex items-center gap-3 rounded-full border border-mint/40 bg-grape/30 px-4 py-1.5 backdrop-blur">
             <span className="h-2 w-2 rounded-full bg-mint shadow-[0_0_10px_2px_rgba(34,225,157,0.9)]" />
             <span className="text-xs font-medium text-lavender sm:text-sm">
-              FASE POST-JAM ACTIVA · RUMBO A GAMEJAMPLUS 26/27 (11TH EDITION)
+              FASE POST-JAM · ENTREGAS CERRADAS · GAMEJAMPLUS 26/27
             </span>
           </div>
 
@@ -248,8 +249,8 @@ function Hero() {
           <p className="mt-6 max-w-lg text-base leading-relaxed text-lavender sm:text-lg">
             ¡Gracias por 48 horas épicas de creación en Barranquilla! La maratón
             presencial terminó, pero el viaje de tu videojuego apenas comienza.
-            Publica tu prototipo en Itch.io, registra tu Pitch en Hero Hub y
-            postúlate a la etapa de Incubación internacional.
+            El plazo de pitch y categorías ya cerró. Explora los juegos en
+            Itch.io y consulta tu proyecto y los próximos anuncios en Hero Hub.
           </p>
 
           <div className="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
@@ -259,7 +260,7 @@ function Hero() {
               rel="noopener noreferrer"
               className="px-7 py-4 text-base sm:text-lg"
             >
-              SUBIR JUEGO Y PITCH EN HERO HUB
+              CONSULTAR MI PROYECTO EN HERO HUB
             </PrimaryButton>
             <SecondaryButton
               href={ITCH_JAM_URL}
@@ -267,12 +268,12 @@ function Hero() {
               rel="noopener noreferrer"
               className="px-7 py-4 text-base sm:text-lg"
             >
-              PUBLICAR EN ITCH.IO (GJ+ 26/27)
+              EXPLORAR LA JAM EN ITCH.IO
             </SecondaryButton>
           </div>
         </div>
 
-        {/* Visual: Key Visual + countdown */}
+        {/* Visual: Key Visual + delivery status */}
         <div className="relative flex flex-col items-center">
           <div className="relative w-full max-w-[500px]">
             {/* Background card accent */}
@@ -302,14 +303,14 @@ function Hero() {
               rotate="rotate-[4deg]"
               slow
             >
-              [ PITCH TIME ]
+              [ PITCH CLOSED ]
             </FloatingPixelTag>
 
             <FloatingPixelTag
               className="-bottom-3.5 right-6 sm:right-10"
               rotate="-rotate-2"
             >
-              [ INCUBATION READY ]
+              [ GAMEJAMPLUS 26/27 ]
             </FloatingPixelTag>
           </div>
 
@@ -404,15 +405,15 @@ function ItchSubmission() {
       <div className="mx-auto max-w-7xl px-6 py-24">
         <div className="max-w-3xl">
           <div className="mb-5">
-            <PixelBadge tone="purple">PASO 1 · ITCH.IO OFICIAL</PixelBadge>
+            <PixelBadge tone="purple">ARCHIVO · ITCH.IO OFICIAL</PixelBadge>
           </div>
           <h2 className="font-display text-4xl font-bold text-void sm:text-5xl">
-            Publica tu prototipo en <span className="text-grape">Itch.io</span>
+            Prototipos en <span className="text-grape">Itch.io</span>
           </h2>
           <p className="mt-6 text-lg leading-relaxed text-void/70">
-            Antes de llenar el formulario en Hero Hub, tu videojuego debe estar
-            publicado y vinculado a la página oficial de la 11.ª Edición de
-            GameJamPlus en Itch.io.
+            La entrega de proyectos ya cerró. Conservamos esta guía como
+            referencia de los requisitos de publicación y vinculación a la
+            11.ª Edición de GameJamPlus en Itch.io; no es una convocatoria abierta.
           </p>
         </div>
 
@@ -535,17 +536,17 @@ function HeroHubGuide() {
       <div className="mx-auto max-w-7xl px-6 py-24">
         <div className="max-w-3xl">
           <div className="mb-5">
-            <PixelBadge tone="purple">PASO 2 · HERO HUB &amp; PITCH</PixelBadge>
+            <PixelBadge tone="purple">ARCHIVO · HERO HUB &amp; PITCH</PixelBadge>
           </div>
           <h2 className="font-display text-4xl font-bold text-void sm:text-5xl">
-            Guía Rápida: Cómo subir tu Juego, Video Pitch y Categorías en{" "}
+            Guía de referencia: Juego, Video Pitch y Categorías en{" "}
             <span className="text-grape">Hero Hub</span>
           </h2>
           <p className="mt-6 text-lg leading-relaxed text-void/70">
-            Sigue las instrucciones oficiales de{" "}
-            <strong className="text-void">herohub.gamejamplus.com</strong> para
-            postular tu videojuego a la evaluación de GameJamPlus y a la etapa
-            de incubación internacional.
+            El plazo de pitch y categorías finalizó el 20 de octubre de 2026 a
+            las 23:59 BRT. Estas instrucciones de{" "}
+            <strong className="text-void">herohub.gamejamplus.com</strong> se
+            conservan como referencia del proceso de postulación ya cerrado.
           </p>
         </div>
 
@@ -568,8 +569,8 @@ function HeroHubGuide() {
                 <strong className="text-void">
                   Solo UNA (1) persona del equipo
                 </strong>{" "}
-                envía el formulario del juego. Solo ese mismo integrante tendrá
-                permisos para editar los datos de la ficha antes del cierre.
+                enviaba el formulario del juego. Solo ese mismo integrante
+                podía editar los datos de la ficha antes del cierre.
               </p>
             </div>
             <div className="rounded-xl border border-void/10 bg-white p-5 shadow-sm">
@@ -579,13 +580,13 @@ function HeroHubGuide() {
               <p className="mt-2 text-sm leading-relaxed text-void/80">
                 Una vez enviado el juego, las tarjetas de{" "}
                 <strong className="text-void">Pitch</strong> y{" "}
-                <strong className="text-void">Categorías</strong> quedan
+                <strong className="text-void">Categorías</strong> quedaban
                 habilitadas.{" "}
                 <strong className="text-void">
                   Cualquier miembro del equipo
                 </strong>{" "}
-                puede enviarlas o actualizarlas hasta el plazo límite (2 días
-                post-jam).
+                podía enviarlas o actualizarlas hasta el cierre del plazo,
+                el 20 de octubre de 2026 a las 23:59 BRT. Ese plazo ya finalizó.
               </p>
             </div>
           </div>
@@ -667,7 +668,7 @@ function HeroHubGuide() {
             rel="noopener noreferrer"
             className="rounded-xl px-8 py-4"
           >
-            ABRIR HERO HUB AHORA
+            CONSULTAR MI PROYECTO EN HERO HUB
           </PrimaryButton>
           <span className="text-xs text-void/60">
             Plataforma oficial:{" "}
@@ -696,10 +697,9 @@ const GJP_PHASES = [
   {
     phase: "02",
     name: "2. Entrega + Pitch",
-    status: "Etapa Activa",
-    badgeClass:
-      "bg-mint text-void font-bold shadow-[0_0_12px_rgba(34,225,157,0.7)]",
-    desc: "Registro de build en Itch.io y postulación en Hero Hub con video pitch y selección de categorías.",
+    status: "Cerrada",
+    badgeClass: "bg-white/20 text-white",
+    desc: "Plazo de pitch y categorías finalizado el 20 de octubre de 2026 a las 23:59 BRT. Consulta tu proyecto en Hero Hub.",
   },
   {
     phase: "03",
@@ -744,10 +744,10 @@ function GameJamPlus() {
             <span className="text-mint">Etapa de Incubación GJ+ 26/27</span>
           </h2>
           <p className="mt-6 text-lg leading-relaxed text-lavender">
-            Los proyectos desarrollados en la Caribe Game Jam que marquen{" "}
+            Los proyectos desarrollados en la Caribe Game Jam que marcaron{" "}
             <strong className="text-white">'Yes'</strong> en la pregunta de
-            Incubación y envíen su Video Pitch entrarán al proceso de selección
-            para la Fase de Incubación de GameJamPlus. Durante esta etapa, los
+            Incubación y enviaron su Video Pitch dentro del plazo cumplen esos
+            requisitos para el proceso de selección. Durante la incubación, los
             equipos seleccionados recibirán mentoría especializada, validación
             comercial, formación en negocios y acceso a la final regional y
             mundial.
@@ -798,9 +798,9 @@ function GameJamPlus() {
                 Incubación
               </h4>
               <p className="mt-1 text-sm text-lavender">
-                1) Marcar "Yes" en la postulación de Hero Hub · 2) Subir el
-                enlace de tu Video Pitch antes del cierre · 3) Mantener la
-                página de Itch.io pública.
+                La postulación requería marcar "Yes" en Hero Hub y enviar el
+                Video Pitch antes del cierre. Mantén la página de Itch.io
+                pública y consulta los próximos anuncios oficiales.
               </p>
             </div>
             <PrimaryButton
@@ -809,7 +809,7 @@ function GameJamPlus() {
               rel="noopener noreferrer"
               className="flex-none rounded-xl px-6 py-3 text-sm"
             >
-              Postular a Incubación
+              Consultar Hero Hub
             </PrimaryButton>
           </div>
         </div>
@@ -1139,16 +1139,16 @@ const FAQS: { q: string; a: React.ReactNode }[] = [
     a: "No. Solo UN (1) representante del equipo debe enviar el formulario inicial de Game Submission (y solo esa persona podrá editarlo). Sin embargo, todos los miembros deben estar registrados dentro del equipo en Hero Hub y haberse unido a la jam en Itch.io.",
   },
   {
-    q: "¿Cuál es la fecha límite para subir el Video Pitch y elegir categorías?",
-    a: "Tienes hasta 2 días después del cierre de la Jam en nuestra sede (Martes 20 de Octubre a las 23:59 hora de Brasilia / BRT). Te recomendamos revisar el reloj en tiempo real dentro de tu tarjeta de proyecto en Hero Hub.",
+    q: "¿Cuándo cerró el plazo para subir el Video Pitch y elegir categorías?",
+    a: "El plazo finalizó el martes 20 de octubre de 2026 a las 23:59, hora de Brasilia (BRT), dos días después del cierre de la Jam en nuestra sede. Consulta tu proyecto en Hero Hub y los próximos anuncios oficiales de GameJamPlus.",
   },
   {
     q: "¿Qué pasa si quiero cambiar el enlace del Pitch o las categorías después de enviarlos?",
-    a: "Puedes utilizar los botones 'Update pitch' y 'Change categories' tantas veces como necesites antes de que el reloj de la plataforma llegue a cero. Cualquier miembro del equipo puede actualizar el pitch o las categorías una vez enviado el juego.",
+    a: "Las opciones 'Update pitch' y 'Change categories' estaban disponibles antes del cierre del plazo, el 20 de octubre de 2026 a las 23:59 BRT. Ese plazo ya finalizó; consulta el estado de tu proyecto en Hero Hub.",
   },
   {
     q: "¿Cómo podemos entrar a la etapa de Incubación de GameJamPlus?",
-    a: "Al completar el formulario de juego en Hero Hub, debes responder obligatoriamente 'Yes' en la pregunta 'Do you want to take part in the INCUBATION stage?' y subir tu Video Pitch antes del cierre de entregas. Los proyectos seleccionados accederán a mentorías internacionales, aceleración y visibilidad ante publishers.",
+    a: "La postulación requería responder 'Yes' en la pregunta 'Do you want to take part in the INCUBATION stage?' del formulario de Hero Hub y enviar el Video Pitch antes del cierre. El plazo ya finalizó. Los proyectos seleccionados accederán a mentorías internacionales, aceleración y visibilidad ante publishers; sigue los anuncios oficiales de GameJamPlus.",
   },
 ]
 
@@ -1255,15 +1255,16 @@ function FinalCta() {
           <div className="pointer-events-none absolute -right-16 top-0 h-64 w-64 rounded-full bg-grape/60 blur-3xl" />
           <div className="relative">
             <div className="mb-6 flex justify-center">
-              <PixelBadge>FASE POST-JAM · CARIBE GAME JAM 2026</PixelBadge>
+              <PixelBadge>ENTREGAS CERRADAS · CARIBE GAME JAM 2026</PixelBadge>
             </div>
             <h2 className="mx-auto max-w-2xl font-display text-4xl font-bold leading-tight text-white sm:text-5xl">
-              ¿Listo para llevar tu juego al{" "}
-              <span className="text-mint">circuito internacional</span>?
+              El viaje de tu juego{" "}
+              <span className="text-mint">continúa</span>
             </h2>
             <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-lavender sm:text-lg">
-              No dejes tu prototipo en el escritorio. Publica en Itch.io, sube
-              tu Pitch en Hero Hub y continúa la ruta en GameJamPlus 26/27.
+              La entrega de pitch y categorías ya cerró. Consulta tu proyecto en
+              Hero Hub, explora la jam en Itch.io y sigue los próximos anuncios
+              de GameJamPlus 26/27.
             </p>
             <div className="mt-9 flex flex-col sm:flex-row items-center justify-center gap-4">
               <PrimaryButton
